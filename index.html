@@ -24,19 +24,13 @@
 
 <!-- Nav Bar -->
 
-<nav class="top-bar" data-topbar>
-    <ul class="title-area">
-        <!-- Title Area -->
-        <li class="name">
-            <h1>
-                <a href="">
-                    Parceler
-                </a>
-            </h1>
-        </li>
-        <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
-    </ul>
-</nav>
+<div class="row">
+    <div class="large-12 columns">
+        <h1><img src="images/package_emoji.png"/> Parceler</h1>
+        <hr/>
+    </div>
+</div>
+
 <!-- End Nav -->
 
 
@@ -44,25 +38,18 @@
 
 <div class="row">
 
-    <h1>Parceler</h1>
-<div id="preamble">
-<div class="sectionbody">
-<div class="paragraph">
-<p><span class="image"><a class="image" href="https://travis-ci.org/johncarl81/parceler"><img src="https://travis-ci.org/johncarl81/parceler.png?branch=master" alt="Build Status"></a></span><br>
-<span class="image"><a class="image" href="https://maven-badges.herokuapp.com/maven-central/org.parceler/parceler-api"><img src="https://maven-badges.herokuapp.com/maven-central/org.parceler/parceler-api/badge.svg" alt="Maven Central"></a></span></p>
-</div>
-<div class="paragraph">
+    <div class="paragraph">
 <p>In Android, <a href="http://developer.android.com/reference/android/os/Parcelable.html">Parcelables</a> are a great way to serialize Java Objects between Contexts.<br>
-<a href="http://www.developerphil.com/parcelable-vs-serializable/">Compared</a> with traditional Serialization, Parcelables take on the<br>
-order of 10x less time to both serialize and deserialize.  There is a major flaw with Parcelables, however.<br>
+<a href="http://www.developerphil.com/parcelable-vs-serializable/">Compared</a> with traditional Serialization, Parcelables take on the order of 10x less time to both serialize and deserialize.<br>
+There is a major flaw with Parcelables, however.<br>
 Parcelables contain a ton of boilerplate code.<br>
-To implement a Parcelable, you must mirror the writeToParcel() and createFromParcel() methods such that they read and write to the Parcel in the same order.<br>
-Also, a Parcelable must define a public final static Parcelable.Creator CREATOR in order for the Android infrastructure to be able to leverage the serialization code.</p>
+To implement a Parcelable, you must mirror the <code>writeToParcel()</code> and <code>createFromParcel()</code> methods such that they read and write to the Parcel in the same order.<br>
+Also, a Parcelable must define a <code>public final static Parcelable.Creator CREATOR</code> in order for the Android infrastructure to be able to leverage the serialization code.</p>
 </div>
 <div class="paragraph">
 <p>Parceler is a code generation library that generates the Android Parcelable boilerplate source code.<br>
-No longer do you have to implement the Parcelable interface, the writeToParcel() or createFromParcel() or the public static final CREATOR.<br>
-You simply annotate a POJO with @Parcel and Parceler does the rest.<br>
+No longer do you have to implement the Parcelable interface, the <code>writeToParcel()</code> or <code>createFromParcel()</code> or the <code>public static final CREATOR</code>.<br>
+You simply annotate a POJO with <code>@Parcel</code> and Parceler does the rest.<br>
 Because Parceler uses the Java JSR-269 Annotation Processor, there is no need to run a tool manually to generate the Parcelable code.<br>
 Just annotate your Java Bean, compile and you are finished.<br>
 By default, Parceler will serialize the fields of your instance directly:</p>
@@ -91,7 +78,7 @@ By default, Parceler will serialize the fields of your instance directly:</p>
 <p>Be careful not to use private fields when using the default field serialization strategy as it will incur a performance penalty due to reflection.</p>
 </div>
 <div class="paragraph">
-<p>To use the generated code, you may reference the generated class directly, or via the Parcels utility class:</p>
+<p>To use the generated code, you may reference the generated class directly, or via the <code>Parcels</code> utility class:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -99,7 +86,7 @@ By default, Parceler will serialize the fields of your instance directly:</p>
 </div>
 </div>
 <div class="paragraph">
-<p>To dereference the @Parcel, just call the Parcels.unwrap() method:</p>
+<p>To dereference the <code>@Parcel</code>, just call the <code>Parcels.unwrap()</code> method:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -118,79 +105,77 @@ bundle.putParcelable(<span class="string"><span class="delimiter">&quot;</span><
 </div>
 </div>
 <div class="paragraph">
-<p>And dereferenced in the onCreate() method:</p>
+<p>And dereferenced in the <code>onCreate()</code> method:</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="java">Example example = Parcels.unwrap(<span class="local-variable">this</span>.getIntent().getExtras().get(<span class="string"><span class="delimiter">&quot;</span><span class="content">example</span><span class="delimiter">&quot;</span></span>));</code></pre>
 </div>
 </div>
-</div>
-</div>
 <div class="sect2">
 <h3 id="parcel_attribute_types">Parcel attribute types</h3>
 <div class="paragraph">
-<p>Only a select number of types may be used as attributes of a @Parcel class.  The following list includes the mapped<br>
+<p>Only a select number of types may be used as attributes of a <code>@Parcel</code> class.  The following list includes the mapped<br>
 types:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>byte</p>
+<p><code>byte</code></p>
 </li>
 <li>
-<p>double</p>
+<p><code>double</code></p>
 </li>
 <li>
-<p>float</p>
+<p><code>float</code></p>
 </li>
 <li>
-<p>int</p>
+<p><code>int</code></p>
 </li>
 <li>
-<p>long</p>
+<p><code>long</code></p>
 </li>
 <li>
-<p>char</p>
+<p><code>char</code></p>
 </li>
 <li>
-<p>boolean</p>
+<p><code>boolean</code></p>
 </li>
 <li>
-<p>String</p>
+<p><code>String</code></p>
 </li>
 <li>
-<p>IBinder</p>
+<p><code>IBinder</code></p>
 </li>
 <li>
-<p>Bundle</p>
+<p><code>Bundle</code></p>
 </li>
 <li>
-<p>SparseArray of any of the mapped types*</p>
+<p><code>SparseArray</code> of any of the mapped types*</p>
 </li>
 <li>
-<p>SparseBooleanArray</p>
+<p><code>SparseBooleanArray</code></p>
 </li>
 <li>
-<p>List of any of the mapped types*</p>
+<p><code>List</code> of any of the mapped types*</p>
 </li>
 <li>
-<p>Map of any of the mapped types*</p>
+<p><code>Map</code> of any of the mapped types*</p>
 </li>
 <li>
-<p>Set of any of the mapped types*</p>
+<p><code>Set</code> of any of the mapped types*</p>
 </li>
 <li>
-<p>Parcelable</p>
+<p><code>Parcelable</code></p>
 </li>
 <li>
-<p>Serializable</p>
+<p><code>Serializable</code></p>
 </li>
 <li>
 <p>Array of any of the mapped types</p>
 </li>
 <li>
-<p>Any other class annotated with @Parcel</p>
+<p>Any other class annotated with <code>@Parcel</code></p>
 </li>
 </ul>
 </div>
@@ -200,9 +185,8 @@ types:</p>
 <div class="sect3">
 <h4 id="polymorphism">Polymorphism</h4>
 <div class="paragraph">
-<p>Note that Parceler does not unwrap inheritance hierarchies, so any polymorphic<br>
-fields will be unwrapped as instances of the base class. This is because Parceler<br>
-opts for performance rather than checking <code>.getClass()</code> for every piece of data.</p>
+<p>Note that Parceler does not unwrap inheritance hierarchies, so any polymorphic fields will be unwrapped as instances of the base class.<br>
+This is because Parceler opts for performance rather than checking <code>.getClass()</code> for every piece of data.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -225,8 +209,7 @@ example = Parcels.unwrap(Parcels.wrap(example));
 </div>
 </div>
 <div class="paragraph">
-<p>Refer to the <a href="#custom-serialization">Custom Serialization</a> section for an example of working with<br>
-polymorphic fields.</p>
+<p>Refer to the <a href="#custom-serialization">Custom Serialization</a> section for an example of working with polymorphic fields.</p>
 </div>
 </div>
 </div>
@@ -240,11 +223,11 @@ in addition to the field-based serialization seen above.</p>
 <h4 id="getter_setter_serialization">Getter/setter serialization</h4>
 <div class="paragraph">
 <p>Parceler may be configured to serialize using getter and setter methods and a non-empty constructor.<br>
-In addition, fields, methods and constructor parameters may be associated using the @ParcelParameter annotation.<br>
+In addition, fields, methods and constructor parameters may be associated using the <code>@ParcelParameter</code> annotation.<br>
 This supports a number of bean strategies including immutability and traditional getter/setter beans.</p>
 </div>
 <div class="paragraph">
-<p>To configure default method serialization, simply configure the @Parcel annotation with Serialization.BEAN:</p>
+<p>To configure default method serialization, simply configure the <code>@Parcel</code> annotation with <code>Serialization.BEAN</code>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -262,7 +245,7 @@ This supports a number of bean strategies including immutability and traditional
 </div>
 </div>
 <div class="paragraph">
-<p>To use a constructor with serialization, annotate the desired constructor with the @ParcelConstructor annotation:</p>
+<p>To use a constructor with serialization, annotate the desired constructor with the <code>@ParcelConstructor</code> annotation:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -290,10 +273,9 @@ This supports a number of bean strategies including immutability and traditional
 <div class="sect3">
 <h4 id="mixing_getters_setters_and_fields">Mixing getters/setters and fields</h4>
 <div class="paragraph">
-<p>You may also mix and match serialization techniques using the @ParcelParameter annotation.<br>
-In the following example, firstName and lastName are written to the bean using the constructor while firstName<br>
-is read from the bean using the field and lastName is read using the getLastName() method.  The parameters firstName<br>
-and lastName are coordinated by the parameter names "first" and "last" respectfully.</p>
+<p>You may also mix and match serialization techniques using the <code>@ParcelParameter</code> annotation.<br>
+In the following example, <code>firstName</code> and <code>lastName</code> are written to the bean using the constructor while <code>firstName</code> is read from the bean using the field and <code>lastName</code> is read using the <code>getLastName()</code> method.<br>
+The parameters <code>firstName</code> and <code>lastName</code> are coordinated by the parameter names <code>"first"</code> and <code>"last"</code> respectfully.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -317,20 +299,18 @@ and lastName are coordinated by the parameter names "first" and "last" respectfu
 </div>
 </div>
 <div class="paragraph">
-<p>For attributes that should not be serialized with Parceler, the attribute field, getter or setter may be annotated by @Transient.</p>
+<p>For attributes that should not be serialized with Parceler, the attribute field, getter or setter may be annotated by <code>@Transient</code>.</p>
 </div>
 <div class="paragraph">
-<p>Parceler supports many different styles centering around the POJO.  This allows @Parcel annotated classes to be used with other<br>
-POJO based libraries, including <a href="https://code.google.com/p/google-gson/">GSON</a>, <a href="https://bitbucket.org/qbusict/cupboard">Cupboard</a>,<br>
-and <a href="http://simple.sourceforge.net/">Simple XML</a> to name a few.</p>
+<p>Parceler supports many different styles centering around the POJO.<br>
+This allows <code>@Parcel</code> annotated classes to be used with other POJO based libraries, including <a href="https://code.google.com/p/google-gson/">GSON</a>, <a href="https://bitbucket.org/qbusict/cupboard">Cupboard</a>, and <a href="http://simple.sourceforge.net/">Simple XML</a> to name a few.</p>
 </div>
 </div>
 <div class="sect3">
 <h4 id="autovalue_annotations">AutoValue annotations</h4>
 <div class="paragraph">
-<p>Additionally, Parceler supports Google&#8217;s <a href="https://github.com/google/auto/tree/master/value">AutoValue</a> annoation processor<br>
-/ code generation library for generating immutable beans.  Parceler interfaces with AutoValue via the @ParcelFactory annotation,<br>
-which maps a static factory method into the annotated @Parcel serialization:</p>
+<p>Additionally, Parceler supports Google&#8217;s <a href="https://github.com/google/auto/tree/master/value">AutoValue</a> annoation processor / code generation library for generating immutable beans.<br>
+Parceler interfaces with AutoValue via the <code>@ParcelFactory</code> annotation, which maps a static factory method into the annotated <code>@Parcel</code> serialization:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -348,8 +328,7 @@ which maps a static factory method into the annotated @Parcel serialization:</p>
 </div>
 </div>
 <div class="paragraph">
-<p>AutoValue generates a different class than the annotated @Parcel, therefore, you need to specify which class<br>
-Parceler should build in the Parcels utility class:</p>
+<p>AutoValue generates a different class than the annotated <code>@Parcel</code>, therefore, you need to specify which class Parceler should build in the <code>Parcels</code> utility class:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -368,13 +347,11 @@ Parceler should build in the Parcels utility class:</p>
 <div class="sect3">
 <h4 id="custom_serialization">Custom serialization</h4>
 <div class="paragraph">
-<p>@Parcel includes an optional parameter to include a manual serializer ParcelConverter for the case where special<br>
-serialization is necessary.  This provides a still cleaner option for using Parcelable classes than implementing them by<br>
-hand.</p>
+<p><code>@Parcel</code> includes an optional parameter to include a manual serializer <code>ParcelConverter</code> for the case where special serialization is necessary.<br>
+This provides a still cleaner option for using Parcelable classes than implementing them by hand.</p>
 </div>
 <div class="paragraph">
-<p>The following code demonstrates using a ParcelConverter to unwrap the inheritance<br>
-hierarchy during deserialization.</p>
+<p>The following code demonstrates using a <code>ParcelConverter</code> to unwrap the inheritance hierarchy during deserialization.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -418,9 +395,9 @@ hierarchy during deserialization.</p>
 <div class="sect2">
 <h3 id="classes_without_java_source">Classes without Java source</h3>
 <div class="paragraph">
-<p>For classes whose corresponding Java source is not available, one may include the class as a Parcel by using the<br>
-@ParcelClass annotation.  This annotation may be declared anywhere in the compiled source that is convenient.  For<br>
-instance, one could include the @ParcelClass along with the Android Application:</p>
+<p>For classes whose corresponding Java source is not available, one may include the class as a Parcel by using the <code>@ParcelClass</code> annotation.<br>
+This annotation may be declared anywhere in the compiled source that is convenient.<br>
+For instance, one could include the <code>@ParcelClass</code> along with the Android Application:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -431,7 +408,7 @@ instance, one could include the @ParcelClass along with the Android Application:
 </div>
 </div>
 <div class="paragraph">
-<p>Multiple @ParcelClass annotations may be declared using the @ParcelClasses annotation.</p>
+<p>Multiple <code>@ParcelClass</code> annotations may be declared using the <code>@ParcelClasses</code> annotation.</p>
 </div>
 </div>
 <div class="sect1">
@@ -504,7 +481,7 @@ limitations under the License.</pre>
         <hr/>
         <div class="row">
             <div class="large-12 columns">
-                <p>Footer</p>
+
             </div>
         </div>
     </div>
