@@ -1,47 +1,352 @@
 ---
 layout: default
-title: Jekyll-Asciidoc Quickstart
-description: A forkable blog-ready Jekyll site using Asciidoc
+title: Parceler
 documentationExpanded: false
 postsExpanded: false
 ---
 
-= Congratulations!
+= Parceler
 
-You've successfully set up and deployed an Jekyll website powered by Asciidoc using the https://github.com/asciidoctor/jekyll-asciidoc-quickstart[*Asciidoc-Jekyll-Quickstart*] project.  If everything is in order then changes to the Asciidoc content will be automatically published to your `gh_pages` branch and hosted via Jekyll and Github.
+image:https://travis-ci.org/johncarl81/parceler.png?branch=master["Build Status", link="https://travis-ci.org/johncarl81/parceler"]
+image:https://maven-badges.herokuapp.com/maven-central/org.parceler/parceler-api/badge.svg["Maven Central", link="https://maven-badges.herokuapp.com/maven-central/org.parceler/parceler-api"]
 
-== What do I do now?
+In Android, http://developer.android.com/reference/android/os/Parcelable.html[Parcelables] are a great way to serialize Java Objects between Contexts.
+http://www.developerphil.com/parcelable-vs-serializable/[Compared] with traditional Serialization, Parcelables take on the
+order of 10x less time to both serialize and deserialize.  There is a major flaw with Parcelables, however.
+Parcelables contain a ton of boilerplate code.
+To implement a Parcelable, you must mirror the +writeToParcel()+ and +createFromParcel()+ methods such that they read and write to the Parcel in the same order.
+Also, a Parcelable must define a +public final static Parcelable.Creator CREATOR+ in order for the Android infrastructure to be able to leverage the serialization code.
 
-Now that you've set up your website to run with Asciidoc you have a ton of options available to you.
+Parceler is a code generation library that generates the Android Parcelable boilerplate source code.
+No longer do you have to implement the Parcelable interface, the +writeToParcel()+ or +createFromParcel()+ or the +public static final CREATOR+.
+You simply annotate a POJO with +@Parcel+ and Parceler does the rest.
+Because Parceler uses the Java JSR-269 Annotation Processor, there is no need to run a tool manually to generate the Parcelable code.
+Just annotate your Java Bean, compile and you are finished.
+By default, Parceler will serialize the fields of your instance directly:
 
-==== Edit content
-Editing content is very simple.  The easiest way to update your blog is to clone your repository, fire up your favorite text editor and run the content locally.  To do this run the `jekyll serve` command and open a web browser to http://localhost:4000.  Jekyll will automatically process and host changes to the content.
+[source,java]
+----
+@Parcel
+public class Example {
+    String name;
+    int age;
 
-You may also edit your content directly on Github.  To do this, navigate the browser the file you wish to edit, click the pensil (edit) button in the upper right hand corner of the view and make your changes.  When you're finished, commit your changes.  This will trigger Travis to generate and publish a new website including your changes.
+    public Example(){ /*Required empty bean constructor*/ }
 
-For blog posts, Jekyll will recognize files under the `_post` directory, parse the name and place it in the list of posts.  These will show up under the `site.posts` variable.
+    public Example(int age, String name) {
+        this.age = age;
+        this.name = name;
+    }
 
-To display a list of posts, use Jekyll syntax similar to the following:
+    public String getName() { return name; }
 
-[source, html]
---
-{% raw %}
-{% for post in site.posts limit: 5 %}
-    <a href=".{{ post.url }}">{{ post.shortTitle }}</a>
-{% endfor %}
-{% endraw %}
---
+    public int getAge() { return age; }
+}
+----
 
+Be careful not to use private fields when using the default field serialization strategy as it will incur a performance penalty due to reflection.
 
-==== Update Look and feel
-The layout provided with the https://github.com/asciidoctor/jekyll-asciidoc-quickstart[Jekyll-Asciidoc Quickstart] project is based on http://foundation.zurb.com[Foundation], a responsive design css framework.  You're free to update the layout by editing the `_layouts/default.html` file and css under the `css` directory.
+To use the generated code, you may reference the generated class directly, or via the +Parcels+ utility class:
 
-This blog layout is based on the http://foundation.zurb.com/templates/blog.html[Blog template].
+[source,java]
+----
+Parcelable wrapped = Parcels.wrap(new Example("Andy", 42);
+----
 
-==== Reference documentation
-The following links will help with detailed explanations on Jekyll and Asciidoc.
+To dereference the +@Parcel+, just call the +Parcels.unwrap()+ method:
 
-http://jekyllrb.com[Jekyll]
-http://asciidoctor.org/docs/asciidoc-syntax-quick-reference/[Asciidoc Quick Reference]
-http://asciidoctor.org[Asciidoctor]
+[source,java]
+----
+Example example = Parcels.unwrap(wrapped);
+example.getName(); // Andy
+example.getAge(); // 42
+----
 
+Of course, the ParcelWrapper can be added to an Android Bundle to transfer from Activity to Activity:
+
+[source,java]
+----
+Bundle bundle = new Bundle();
+bundle.putParcelable("example", Parcels.wrap(example));
+----
+
+And dereferenced in the +onCreate()+ method:
+
+[source,java]
+----
+Example example = Parcels.unwrap(this.getIntent().getExtras().get("example"));
+----
+
+=== Parcel attribute types
+Only a select number of types may be used as attributes of a +@Parcel+ class.  The following list includes the mapped
+types:
+
+ * +byte+
+ * +double+
+ * +float+
+ * +int+
+ * +long+
+ * +char+
+ * +boolean+
+ * +String+
+ * +IBinder+
+ * +Bundle+
+ * +SparseArray+ of any of the mapped types*
+ * +SparseBooleanArray+
+ * +List+ of any of the mapped types*
+ * +Map+ of any of the mapped types*
+ * +Set+ of any of the mapped types*
+ * +Parcelable+
+ * +Serializable+
+ * Array of any of the mapped types
+ * Any other class annotated with +@Parcel+
+
+*Parcel will error if the generic parameter is not mapped.
+
+==== Polymorphism
+Note that Parceler does not unwrap inheritance hierarchies, so any polymorphic
+fields will be unwrapped as instances of the base class. This is because Parceler
+opts for performance rather than checking `.getClass()` for every piece of data.
+[source,java]
+----
+@Parcel
+public class Example {
+    public Parent p;
+    Example(Parent p) { this.p = p; }
+}
+
+@Parcel public class Parent {}
+@Parcel public class Child extends Parent {}
+----
+
+[source,java]
+----
+Example example = new Example(new Child());
+System.out.println("%b", example.p instanceof Child); // true
+example = Parcels.unwrap(Parcels.wrap(example));
+System.out.println("%b", example.p instanceof Child); // false
+----
+
+Refer to the <<custom-serialization,Custom Serialization>> section for an example of working with
+polymorphic fields.
+
+=== Serialization techniques
+
+Parceler offers several choices for how to serialize and deserialize an object
+in addition to the field-based serialization seen above.
+
+==== Getter/setter serialization
+Parceler may be configured to serialize using getter and setter methods and a non-empty constructor.
+In addition, fields, methods and constructor parameters may be associated using the +@ParcelParameter+ annotation.
+This supports a number of bean strategies including immutability and traditional getter/setter beans.
+
+To configure default method serialization, simply configure the +@Parcel+ annotation with +Serialization.BEAN+:
+
+[source,java]
+----
+@Parcel(Serialization.BEAN)
+public class Example {
+    private String name;
+    private int age;
+
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+
+    public int getAge() { return age; }
+    public void setAge(int age) { this.age = age; }
+}
+----
+
+To use a constructor with serialization, annotate the desired constructor with the +@ParcelConstructor+ annotation:
+
+[source,java]
+----
+@Parcel(Serialization.BEAN)
+public class Example {
+    private final String name;
+    private final int age;
+
+    @ParcelConstructor
+    public Example(int age, String name) {
+        this.age = age;
+        this.name = name;
+    }
+
+    public String getName() { return name; }
+
+    public int getAge() { return age; }
+}
+----
+
+If an empty constructor is present, Parceler will use that constructor unless another constructor is annotated.
+
+==== Mixing getters/setters and fields
+You may also mix and match serialization techniques using the +@ParcelParameter+ annotation.
+In the following example, +firstName+ and +lastName+ are written to the bean using the constructor while +firstName+
+is read from the bean using the field and +lastName+ is read using the +getLastName()+ method.  The parameters +firstName+
+and +lastName+ are coordinated by the parameter names +"first"+ and +"last"+ respectfully.
+
+[source,java]
+----
+@Parcel
+public class Example {
+    @ParcelParameter("first")
+    String firstName;
+    String lastName;
+
+    @ParcelConstructor
+    public Example(@ParcelParam("first") String firstName, @ParcelParam("last") String lastName){
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
+    public String getFirstName() { return firstName; }
+
+    @ParcelParameter("last");
+    public int getLastName() { return lastName; }
+}
+----
+
+For attributes that should not be serialized with Parceler, the attribute field, getter or setter may be annotated by +@Transient+.
+
+Parceler supports many different styles centering around the POJO.  This allows +@Parcel+ annotated classes to be used with other
+POJO based libraries, including https://code.google.com/p/google-gson/[GSON], https://bitbucket.org/qbusict/cupboard[Cupboard],
+and http://simple.sourceforge.net/[Simple XML] to name a few.
+
+==== AutoValue annotations
+Additionally, Parceler supports Google's https://github.com/google/auto/tree/master/value[AutoValue] annoation processor
+/ code generation library for generating immutable beans.  Parceler interfaces with AutoValue via the +@ParcelFactory+ annotation,
+which maps a static factory method into the annotated +@Parcel+ serialization:
+
+[source,java]
+----
+@AutoValue
+@Parcel
+public abstract class AutoValueParcel {
+
+    @ParcelProperty("value") public abstract String value();
+
+    @ParcelFactory
+    public static AutoValueParcel create(String value) {
+        return new AutoValue_AutoValueParcel(value);
+    }
+}
+----
+
+AutoValue generates a different class than the annotated +@Parcel+, therefore, you need to specify which class
+Parceler should build in the +Parcels+ utility class:
+
+[source,java]
+----
+Parcelable wrappedAutoValue = Parcels.wrap(AutoValueParcel.class, AutoValueParcel.create("example"));
+----
+And to deserialize:
+[source,java]
+----
+AuthValueParcel autoValueParcel = Parcels.unwrap(wrappedAutoValue);
+----
+
+==== Custom serialization
++@Parcel+ includes an optional parameter to include a manual serializer +ParcelConverter+ for the case where special
+serialization is necessary.  This provides a still cleaner option for using Parcelable classes than implementing them by
+hand.
+
+The following code demonstrates using a +ParcelConverter+ to unwrap the inheritance
+hierarchy during deserialization.
+
+[source,java]
+----
+@Parcel
+public class Item {
+    @ParcelPropertyConverter(ItemListParcelConverter.class)
+    public List<Item> itemList;
+}
+@Parcel public class SubItem1 extends Item {}
+@Parcel public class SubItem2 extends Item {}
+
+public class ItemListParcelConverter implements ParcelConverter<List<Item>> {
+    @Override
+    public void toParcel(List<Item> input, Parcel parcel) {
+        if (input == null) {
+            parcel.writeInt(-1);
+        }
+        else {
+            parcel.writeInt(input.size());
+            for (Item item : input) {
+                parcel.writeParcelable(Parcels.wrap(item), 0);
+            }
+        }
+    }
+
+    @Override
+    public List<Item> fromParcel(Parcel parcel) {
+        int size = parcel.readInt();
+        if (size < 0) return null;
+        List<Item> items = new ArrayList<Item>();
+        for (int i = 0; i < size; ++i) {
+            items.add((Item) Parcels.unwrap(parcel.readParcelable(Item.class.getClassLoader())));
+        }
+        return items;
+    }
+}
+----
+
+=== Classes without Java source
+For classes whose corresponding Java source is not available, one may include the class as a Parcel by using the
++@ParcelClass+ annotation.  This annotation may be declared anywhere in the compiled source that is convenient.  For
+instance, one could include the +@ParcelClass+ along with the Android Application:
+
+[source,java]
+----
+@ParcelClass(LibraryParcel.class)
+public class AndroidApplication extends Application{
+    //...
+}
+----
+
+Multiple +@ParcelClass+ annotations may be declared using the +@ParcelClasses+ annotation.
+
+== Getting Parceler
+
+You may download Parceler as a Maven dependency:
+
+[source,xml]
+----
+<dependency>
+    <groupId>org.parceler</groupId>
+    <artifactId>parceler</artifactId>
+    <version>${parceler.version}</version>
+    <scope>provided</scope>
+</dependency>
+<dependency>
+    <groupId>org.parceler</groupId>
+    <artifactId>parceler-api</artifactId>
+    <version>${parceler.version}</version>
+</dependency>
+----
+
+or Gradle:
+[source,groovy]
+----
+compile "org.parceler:parceler-api:${parcelerVersion}"
+provided "org.parceler:parceler:${parcelerVersion}"
+----
+
+Or from http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22org.parceler%22[Maven Central].
+
+== License
+----
+Copyright 2011-2015 John Ericksen
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+----
