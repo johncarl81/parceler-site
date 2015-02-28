@@ -1,0 +1,4 @@
+.title, .title:hover, .title:visited {
+    text-decoration: none;
+    color: #ba3925;
+}
