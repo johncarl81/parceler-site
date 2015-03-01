@@ -7,5 +7,6 @@ asciidoctor:
     - idseparator=_
     - source-highlighter=coderay
     - icons=font-awesome
+    - hardbreaks!
 
 # end of configuration
