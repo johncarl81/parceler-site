@@ -216,7 +216,7 @@ Parceler supports many different styles centering around the POJO.
 This allows `@Parcel` annotated classes to be used with other POJO based libraries, including https://code.google.com/p/google-gson/[GSON], https://bitbucket.org/qbusict/cupboard[Cupboard], and http://simple.sourceforge.net/[Simple XML] to name a few.
 
 ==== Static Factory support
-As an alternative to using a constructor directly, Pareler supports using an annotated Static Factory to build an instance of the given class.
+As an alternative to using a constructor directly, Parceler supports using an annotated Static Factory to build an instance of the given class.
 This style supports Google's https://github.com/google/auto/tree/master/value[AutoValue] annoation processor / code generation library for generating immutable beans.
 Parceler interfaces with AutoValue via the `@ParcelFactory` annotation, which maps a static factory method into the annotated `@Parcel` serialization:
 
