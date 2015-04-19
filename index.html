@@ -102,7 +102,7 @@ example.getAge(); <span class="comment">// 42</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Of course, the ParcelWrapper can be added to an Android Bundle to transfer from Activity to Activity:</p>
+<p>Of course, the wrapped <code>Parcelable</code> can be added to an Android Bundle to transfer from Activity to Activity:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -164,13 +164,13 @@ types:</p>
 <p><code>SparseBooleanArray</code></p>
 </li>
 <li>
-<p><code>List</code> of any of the mapped types*</p>
+<p><code>List</code>, <code>ArrayList</code> and <code>LinkedList</code> of any of the mapped types*</p>
 </li>
 <li>
-<p><code>Map</code> of any of the mapped types*</p>
+<p><code>Map</code>, <code>HashMap</code>, <code>LinkedHashMap</code>, <code>SortedMap</code>, and <code>TreeMap</code> of any of the mapped types*</p>
 </li>
 <li>
-<p><code>Set</code> of any of the mapped types*</p>
+<p><code>Set</code>, <code>HashSet</code>, <code>SortedSet</code>, <code>TreeSet</code>, <code>LinkedHashSet</code> of any of the mapped types*</p>
 </li>
 <li>
 <p><code>Parcelable</code></p>
@@ -223,8 +223,7 @@ example = Parcels.unwrap(Parcels.wrap(example));
 <div class="sect2">
 <h3 id="serialization_techniques">Serialization techniques</h3>
 <div class="paragraph">
-<p>Parceler offers several choices for how to serialize and deserialize an object
-in addition to the field-based serialization seen above.</p>
+<p>Parceler offers several choices for how to serialize and deserialize an object in addition to the field-based serialization seen above.</p>
 </div>
 <div class="sect3">
 <h4 id="getter_setter_serialization">Getter/setter serialization</h4>
@@ -314,9 +313,10 @@ This allows <code>@Parcel</code> annotated classes to be used with other POJO ba
 </div>
 </div>
 <div class="sect3">
-<h4 id="autovalue_annotations">AutoValue annotations</h4>
+<h4 id="static_factory_support">Static Factory support</h4>
 <div class="paragraph">
-<p>Additionally, Parceler supports Google&#8217;s <a href="https://github.com/google/auto/tree/master/value">AutoValue</a> annoation processor / code generation library for generating immutable beans.
+<p>As an alternative to using a constructor directly, Pareler supports using an annotated Static Factory to build an instance of the given class.
+This style supports Google&#8217;s <a href="https://github.com/google/auto/tree/master/value">AutoValue</a> annoation processor / code generation library for generating immutable beans.
 Parceler interfaces with AutoValue via the <code>@ParcelFactory</code> annotation, which maps a static factory method into the annotated <code>@Parcel</code> serialization:</p>
 </div>
 <div class="listingblock">
@@ -347,7 +347,7 @@ Parceler interfaces with AutoValue via the <code>@ParcelFactory</code> annotatio
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="java">AuthValueParcel autoValueParcel = Parcels.unwrap(wrappedAutoValue);</code></pre>
+<pre class="CodeRay highlight"><code data-lang="java">AutoValueParcel autoValueParcel = Parcels.unwrap(wrappedAutoValue);</code></pre>
 </div>
 </div>
 </div>
@@ -416,6 +416,81 @@ For instance, one could include the <code>@ParcelClass</code> along with the And
 </div>
 <div class="paragraph">
 <p>Multiple <code>@ParcelClass</code> annotations may be declared using the <code>@ParcelClasses</code> annotation.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="advanced_configuration">Advanced configuration</h3>
+<div class="sect3">
+<h4 id="skipping_analysis">Skipping analysis</h4>
+<div class="paragraph">
+<p>It is a common practice for some libraries to require a bean to extend a base class.
+Although it is not the most optimal case, Parceler supports this practice by allowing the configuration of what classes in the inheritance hierarchy to analyze via the analyze parameter:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@Parcel</span>(analyze = {One.class, Three.class)
+<span class="type">class</span> <span class="class">One</span> <span class="directive">extends</span> Two{}
+<span class="type">class</span> <span class="class">Two</span> <span class="directive">extends</span> Three{}
+<span class="type">class</span> <span class="class">Three</span> <span class="directive">extends</span> BaseClass{}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In this example, only fields of the <code>One</code> and <code>Three</code> classes will be serialized, avoiding both the <code>BaseClass</code> and <code>Two</code> class parameters.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="specific_wrapping">Specific wrapping</h4>
+<div class="paragraph">
+<p>The Parcels utility class looks up the given class for wrapping by class.
+For performance reasons this ignores inheritance, both super and base classes.
+There are two solutions to this problem.
+First, one may specify additional types to associate to the given type via the <code>implementations</code> parameter:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="type">class</span> <span class="class">ExampleProxy</span> etends Example{}
+<span class="annotation">@Parcel</span>(implementations = ExampleProxy.class)
+<span class="type">class</span> <span class="class">Example</span>{}
+
+ExampleProxy proxy = <span class="keyword">new</span> ExampleProxy();
+Parcels.wrap(proxy);  <span class="comment">// ExampleProxy will be serialized as a Example</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Second, one may also specify the class type when using the <code>Parcels.wrap()</code> method:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">ExampleProxy proxy = <span class="keyword">new</span> ExampleProxy();
+Parcels.wrap(Example.class, proxy);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="avoiding_parcels_indexing">Avoiding Parcels indexing</h4>
+<div class="paragraph">
+<p>Using Parceler in libraries can be challenging because Parceler writes a single mapping class <code>Parceler$$Parcels</code> to associate a given type with a <code>Parcelable</code>.
+This mapping class can collide giving the following error during compilation:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">Error Code:
+    2
+Output:
+    UNEXPECTED TOP-LEVEL EXCEPTION:
+    com.android.dex.DexException: Multiple dex files define Lorg/parceler/Parceler$$Parcels$1;
+        at com.android.dx.merge.DexMerger.readSortableTypes(DexMerger.java:594)
+        at com.android.dx.merge.DexMerger.getSortedTypes(DexMerger.java:552)
+        at com.android.dx.merge.DexMerger.mergeClassDefs(DexMerger.java:533)
+        ....</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>To avoid writing this common mapping class, set <code>parcelsIndex = false</code> to each of the class in the library.</p>
+</div>
+<div class="paragraph">
+<p>Alternatively, using <code>@ParcelClass</code> in the root project, instead of annotating classes directly in the library can avoid this issue.</p>
+</div>
 </div>
 </div>
 <div class="sect1">
