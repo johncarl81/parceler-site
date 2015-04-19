@@ -428,10 +428,10 @@ Although it is not the most optimal case, Parceler supports this practice by all
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@Parcel</span>(analyze = {One.class, Three.class)
-<span class="type">class</span> <span class="class">One</span> <span class="directive">extends</span> Two{}
-<span class="type">class</span> <span class="class">Two</span> <span class="directive">extends</span> Three{}
-<span class="type">class</span> <span class="class">Three</span> <span class="directive">extends</span> BaseClass{}</code></pre>
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@Parcel</span>(analyze = {One.class, Three.class})
+<span class="type">class</span> <span class="class">One</span> <span class="directive">extends</span> Two {}
+<span class="type">class</span> <span class="class">Two</span> <span class="directive">extends</span> Three {}
+<span class="type">class</span> <span class="class">Three</span> <span class="directive">extends</span> BaseClass {}</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -448,9 +448,9 @@ First, one may specify additional types to associate to the given type via the <
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="java"><span class="type">class</span> <span class="class">ExampleProxy</span> etends Example{}
-<span class="annotation">@Parcel</span>(implementations = ExampleProxy.class)
-<span class="type">class</span> <span class="class">Example</span>{}
+<pre class="CodeRay highlight"><code data-lang="java"><span class="type">class</span> <span class="class">ExampleProxy</span> etends Example {}
+<span class="annotation">@Parcel</span>(implementations = {ExampleProxy.class})
+<span class="type">class</span> <span class="class">Example</span> {}
 
 ExampleProxy proxy = <span class="keyword">new</span> ExampleProxy();
 Parcels.wrap(proxy);  <span class="comment">// ExampleProxy will be serialized as a Example</span></code></pre>
@@ -486,7 +486,8 @@ Output:
 </div>
 </div>
 <div class="paragraph">
-<p>To avoid writing this common mapping class, set <code>parcelsIndex = false</code> to each of the class in the library.</p>
+<p>To avoid writing this common mapping class, set <code>parcelsIndex = false</code> to each of the library classes.
+Parceler will not write a <code>Parceler$$Parcels</code> mapping class if no indexable classes exist and the Parcels utiltiy class will fallback to looking up the generated class by name.</p>
 </div>
 <div class="paragraph">
 <p>Alternatively, using <code>@ParcelClass</code> in the root project, instead of annotating classes directly in the library can avoid this issue.</p>
