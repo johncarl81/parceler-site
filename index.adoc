@@ -75,8 +75,8 @@ Example example = Parcels.unwrap(this.getIntent().getExtras().get("example"));
 ----
 
 === Parcel attribute types
-Only a select number of types may be used as attributes of a `@Parcel` class.  The following list includes the mapped
-types:
+Only a select number of types may be used as attributes of a `@Parcel` class.
+The following list includes the mapped types:
 
  * `byte`
  * `double`
@@ -99,6 +99,15 @@ types:
  * Any other class annotated with `@Parcel`
 
 *Parcel will error if the generic parameter is not mapped.
+
+Parceler also supports any of the above types directly.
+This is especially useful when dealing with collections of classes annotated with `@Parcel`:
+
+[source,java]
+----
+Parcelable listParcelable = Parcels.wrap(new ArrayList<Example>());
+Parcelable mapParcelable = Parcels.wrap(new HashMap<String, Example>());
+----
 
 ==== Polymorphism
 Note that Parceler does not unwrap inheritance hierarchies, so any polymorphic fields will be unwrapped as instances of the base class.
