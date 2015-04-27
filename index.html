@@ -122,8 +122,8 @@ bundle.putParcelable(<span class="string"><span class="delimiter">&quot;</span><
 <div class="sect2">
 <h3 id="parcel_attribute_types">Parcel attribute types</h3>
 <div class="paragraph">
-<p>Only a select number of types may be used as attributes of a <code>@Parcel</code> class.  The following list includes the mapped
-types:</p>
+<p>Only a select number of types may be used as attributes of a <code>@Parcel</code> class.
+The following list includes the mapped types:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -188,6 +188,16 @@ types:</p>
 </div>
 <div class="paragraph">
 <p>*Parcel will error if the generic parameter is not mapped.</p>
+</div>
+<div class="paragraph">
+<p>Parceler also supports any of the above types directly.
+This is especially useful when dealing with collections of classes annotated with <code>@Parcel</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">Parcelable listParcelable = Parcels.wrap(<span class="keyword">new</span> <span class="predefined-type">ArrayList</span>&lt;Example&gt;());
+Parcelable mapParcelable = Parcels.wrap(<span class="keyword">new</span> <span class="predefined-type">HashMap</span>&lt;<span class="predefined-type">String</span>, Example&gt;());</code></pre>
+</div>
 </div>
 <div class="sect3">
 <h4 id="polymorphism">Polymorphism</h4>
