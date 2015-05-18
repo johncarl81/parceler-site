@@ -198,14 +198,14 @@ public class Example {
     String lastName;
 
     @ParcelConstructor
-    public Example(@ParcelParam("first") String firstName, @ParcelParam("last") String lastName){
+    public Example(@ParcelParameter("first") String firstName, @ParcelParameter("last") String lastName){
         this.firstName = firstName;
         this.lastName = lastName;
     }
 
     public String getFirstName() { return firstName; }
 
-    @ParcelParameter("last");
+    @ParcelParameter("last")
     public String getLastName() { return lastName; }
 }
 ----
