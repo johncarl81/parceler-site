@@ -239,7 +239,7 @@ example = Parcels.unwrap(Parcels.wrap(example));
 <h4 id="getter_setter_serialization">Getter/setter serialization</h4>
 <div class="paragraph">
 <p>Parceler may be configured to serialize using getter and setter methods and a non-empty constructor.
-In addition, fields, methods and constructor parameters may be associated using the <code>@ParcelParameter</code> annotation.
+In addition, fields, methods and constructor parameters may be associated using the <code>@ParcelProperty</code> annotation.
 This supports a number of bean strategies including immutability and traditional getter/setter beans.</p>
 </div>
 <div class="paragraph">
@@ -289,7 +289,7 @@ This supports a number of bean strategies including immutability and traditional
 <div class="sect3">
 <h4 id="mixing_getters_setters_and_fields">Mixing getters/setters and fields</h4>
 <div class="paragraph">
-<p>You may also mix and match serialization techniques using the <code>@ParcelParameter</code> annotation.
+<p>You may also mix and match serialization techniques using the <code>@ParcelProperty</code> annotation.
 In the following example, <code>firstName</code> and <code>lastName</code> are written to the bean using the constructor while <code>firstName</code> is read from the bean using the field and <code>lastName</code> is read using the <code>getLastName()</code> method.
 The parameters <code>firstName</code> and <code>lastName</code> are coordinated by the parameter names <code>"first"</code> and <code>"last"</code> respectfully.</p>
 </div>
@@ -297,19 +297,19 @@ The parameters <code>firstName</code> and <code>lastName</code> are coordinated 
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@Parcel</span>
 <span class="directive">public</span> <span class="type">class</span> <span class="class">Example</span> {
-    <span class="annotation">@ParcelParameter</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">first</span><span class="delimiter">&quot;</span></span>)
+    <span class="annotation">@ParcelProperty</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">first</span><span class="delimiter">&quot;</span></span>)
     <span class="predefined-type">String</span> firstName;
     <span class="predefined-type">String</span> lastName;
 
     <span class="annotation">@ParcelConstructor</span>
-    <span class="directive">public</span> Example(<span class="annotation">@ParcelParameter</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">first</span><span class="delimiter">&quot;</span></span>) <span class="predefined-type">String</span> firstName, <span class="annotation">@ParcelParameter</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">last</span><span class="delimiter">&quot;</span></span>) <span class="predefined-type">String</span> lastName){
+    <span class="directive">public</span> Example(<span class="annotation">@ParcelProperty</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">first</span><span class="delimiter">&quot;</span></span>) <span class="predefined-type">String</span> firstName, <span class="annotation">@ParcelProperty</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">last</span><span class="delimiter">&quot;</span></span>) <span class="predefined-type">String</span> lastName){
         <span class="local-variable">this</span>.firstName = firstName;
         <span class="local-variable">this</span>.lastName = lastName;
     }
 
     <span class="directive">public</span> <span class="predefined-type">String</span> getFirstName() { <span class="keyword">return</span> firstName; }
 
-    <span class="annotation">@ParcelParameter</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">last</span><span class="delimiter">&quot;</span></span>)
+    <span class="annotation">@ParcelProperty</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">last</span><span class="delimiter">&quot;</span></span>)
     <span class="directive">public</span> <span class="predefined-type">String</span> getLastName() { <span class="keyword">return</span> lastName; }
 }</code></pre>
 </div>
