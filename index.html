@@ -302,14 +302,14 @@ The parameters <code>firstName</code> and <code>lastName</code> are coordinated 
     <span class="predefined-type">String</span> lastName;
 
     <span class="annotation">@ParcelConstructor</span>
-    <span class="directive">public</span> Example(<span class="annotation">@ParcelParam</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">first</span><span class="delimiter">&quot;</span></span>) <span class="predefined-type">String</span> firstName, <span class="annotation">@ParcelParam</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">last</span><span class="delimiter">&quot;</span></span>) <span class="predefined-type">String</span> lastName){
+    <span class="directive">public</span> Example(<span class="annotation">@ParcelParameter</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">first</span><span class="delimiter">&quot;</span></span>) <span class="predefined-type">String</span> firstName, <span class="annotation">@ParcelParameter</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">last</span><span class="delimiter">&quot;</span></span>) <span class="predefined-type">String</span> lastName){
         <span class="local-variable">this</span>.firstName = firstName;
         <span class="local-variable">this</span>.lastName = lastName;
     }
 
     <span class="directive">public</span> <span class="predefined-type">String</span> getFirstName() { <span class="keyword">return</span> firstName; }
 
-    <span class="annotation">@ParcelParameter</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">last</span><span class="delimiter">&quot;</span></span>);
+    <span class="annotation">@ParcelParameter</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">last</span><span class="delimiter">&quot;</span></span>)
     <span class="directive">public</span> <span class="predefined-type">String</span> getLastName() { <span class="keyword">return</span> lastName; }
 }</code></pre>
 </div>
@@ -325,7 +325,7 @@ This allows <code>@Parcel</code> annotated classes to be used with other POJO ba
 <div class="sect3">
 <h4 id="static_factory_support">Static Factory support</h4>
 <div class="paragraph">
-<p>As an alternative to using a constructor directly, Pareler supports using an annotated Static Factory to build an instance of the given class.
+<p>As an alternative to using a constructor directly, Parceler supports using an annotated Static Factory to build an instance of the given class.
 This style supports Google&#8217;s <a href="https://github.com/google/auto/tree/master/value">AutoValue</a> annoation processor / code generation library for generating immutable beans.
 Parceler interfaces with AutoValue via the <code>@ParcelFactory</code> annotation, which maps a static factory method into the annotated <code>@Parcel</code> serialization:</p>
 </div>
