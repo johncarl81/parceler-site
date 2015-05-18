@@ -141,7 +141,7 @@ Parceler offers several choices for how to serialize and deserialize an object i
 
 ==== Getter/setter serialization
 Parceler may be configured to serialize using getter and setter methods and a non-empty constructor.
-In addition, fields, methods and constructor parameters may be associated using the `@ParcelParameter` annotation.
+In addition, fields, methods and constructor parameters may be associated using the `@ParcelProperty` annotation.
 This supports a number of bean strategies including immutability and traditional getter/setter beans.
 
 To configure default method serialization, simply configure the `@Parcel` annotation with `Serialization.BEAN`:
@@ -185,7 +185,7 @@ public class Example {
 If an empty constructor is present, Parceler will use that constructor unless another constructor is annotated.
 
 ==== Mixing getters/setters and fields
-You may also mix and match serialization techniques using the `@ParcelParameter` annotation.
+You may also mix and match serialization techniques using the `@ParcelProperty` annotation.
 In the following example, `firstName` and `lastName` are written to the bean using the constructor while `firstName` is read from the bean using the field and `lastName` is read using the `getLastName()` method.
 The parameters `firstName` and `lastName` are coordinated by the parameter names `"first"` and `"last"` respectfully.
 
@@ -193,19 +193,19 @@ The parameters `firstName` and `lastName` are coordinated by the parameter names
 ----
 @Parcel
 public class Example {
-    @ParcelParameter("first")
+    @ParcelProperty("first")
     String firstName;
     String lastName;
 
     @ParcelConstructor
-    public Example(@ParcelParameter("first") String firstName, @ParcelParameter("last") String lastName){
+    public Example(@ParcelProperty("first") String firstName, @ParcelProperty("last") String lastName){
         this.firstName = firstName;
         this.lastName = lastName;
     }
 
     public String getFirstName() { return firstName; }
 
-    @ParcelParameter("last")
+    @ParcelProperty("last")
     public String getLastName() { return lastName; }
 }
 ----
