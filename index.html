@@ -118,6 +118,23 @@ bundle.putParcelable(<span class="string"><span class="delimiter">&quot;</span><
 <pre class="CodeRay highlight"><code data-lang="java">Example example = Parcels.unwrap(<span class="local-variable">this</span>.getIntent().getExtras().get(<span class="string"><span class="delimiter">&quot;</span><span class="content">example</span><span class="delimiter">&quot;</span></span>));</code></pre>
 </div>
 </div>
+<div class="paragraph">
+<p>This wrapping and unwrapping technique plays well with the Intent Factory pattern.
+In addition, Parceler is supported by the following libraries:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="http://androidtransfuse.org/documentation.html#parcel">Transfuse</a> - Allows <code>@Parcel</code> annotated beans to be used with the <code>@Extra</code> injection.</p>
+</li>
+<li>
+<p><a href="https://github.com/sockeqwe/fragmentargs#argsbundler">FragmentArgs</a> - Uses the <code>ParcelerArgsBundler</code> adapter to wrap and unwrap <code>@Parcel</code> annotated beans with fragment parameters.</p>
+</li>
+<li>
+<p><a href="https://github.com/f2prateek/dart">Dart</a> - Autodetects <code>@Parcel</code> annotated beans and automatically unwraps them when using <code>@InjectExtra</code>.</p>
+</li>
+</ul>
+</div>
 </div>
 <div class="sect2">
 <h3 id="parcel_attribute_types">Parcel attribute types</h3>
