@@ -520,6 +520,22 @@ Parceler will not write a <code>Parceler$$Parcels</code> mapping class if no ind
 <p>Alternatively, using <code>@ParcelClass</code> in the root project, instead of annotating classes directly in the library can avoid this issue.</p>
 </div>
 </div>
+<div class="sect3">
+<h4 id="configuring_proguard">Configuring Proguard</h4>
+<div class="paragraph">
+<p>To configure Proguard, add the following lines to your proguard configuration file.  These will keep files related to the <code>Parcels</code> utilty class:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre># Parcel library
+-keep class * implements android.os.Parcelable {
+  public static final android.os.Parcelable$Creator *;
+}
+
+-keep class org.parceler.Parceler$$Parcels</pre>
+</div>
+</div>
+</div>
 </div>
 <div class="sect1">
 <h2 id="getting_parceler">Getting Parceler</h2>
