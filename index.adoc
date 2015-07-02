@@ -140,7 +140,7 @@ example = Parcels.unwrap(Parcels.wrap(example));
 System.out.println("%b", example.p instanceof Child); // false
 ----
 
-Refer to the <<custom-serialization,Custom Serialization>> section for an example of working with polymorphic fields.
+Refer to the <<custom_serialization,Custom Serialization>> section for an example of working with polymorphic fields.
 
 === Serialization techniques
 
