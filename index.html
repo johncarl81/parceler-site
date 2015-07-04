@@ -43,7 +43,13 @@
 
 <div class="row">
     <div class="large-12 columns">
-        <div class="sect2">
+        <div class="paragraph">
+<p>Have a question?  <a href="http://stackoverflow.com/questions/ask?tags=parceler">Ask it on StackOverflow.</a></p>
+</div>
+<div class="paragraph">
+<p>Found an issue?  <a href="https://github.com/johncarl81/parceler/issues/new">Please report it.</a></p>
+</div>
+<div class="sect2">
 <h3 id="introduction">Introduction</h3>
 <div class="paragraph">
 <p>In Android, <a href="http://developer.android.com/reference/android/os/Parcelable.html">Parcelables</a> are a great way to serialize Java Objects between Contexts.
@@ -421,6 +427,26 @@ This provides a still cleaner option for using Parcelable classes than implement
             items.add((Item) Parcels.unwrap(parcel.readParcelable(Item.class.getClassLoader())));
         }
         <span class="keyword">return</span> items;
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Parceler is also packaged with a series of base classes to make Collection conversion easier located under the <code>org.parceler.converter</code> package of the api.
+These base classes take care of a variety of difficult or verbose jobs dealing with Collections including null checks and collectin iteration.
+For instance, the above <code>ParcelConverter</code> could be written using the `ArrayListParcelConverter':</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="directive">public</span> <span class="type">class</span> <span class="class">ItemListParcelConverter</span> <span class="directive">extends</span> ArrayListParcelConverter&lt;Item&gt; {
+    <span class="annotation">@Override</span>
+    <span class="directive">public</span> <span class="type">void</span> itemToParcel(Item item, Parcel parcel) {
+        parcel.writeParcelable(Parcels.wrap(item), <span class="integer">0</span>);
+    }
+
+    <span class="annotation">@Override</span>
+    <span class="directive">public</span> Item itemFromParcel(Parcel parcel) {
+        <span class="keyword">return</span> Parcels.unwrap(parcel.readParcelable(ItemListParcelConverter.class.getClassLoader()));
     }
 }</code></pre>
 </div>
