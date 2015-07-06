@@ -446,7 +446,7 @@ For instance, the above <code>ParcelConverter</code> could be written using the 
 
     <span class="annotation">@Override</span>
     <span class="directive">public</span> Item itemFromParcel(Parcel parcel) {
-        <span class="keyword">return</span> Parcels.unwrap(parcel.readParcelable(ItemListParcelConverter.class.getClassLoader()));
+        <span class="keyword">return</span> Parcels.unwrap(parcel.readParcelable(Item.class.getClassLoader()));
     }
 }</code></pre>
 </div>
