@@ -2,6 +2,8 @@
 
 title: "Jekyll-asciidoc-quickstart"
 
+currentVersion: "1.0.2"
+
 asciidoctor:
   attributes:
     - idseparator=_
