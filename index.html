@@ -354,7 +354,7 @@ This allows <code>@Parcel</code> annotated classes to be used with other POJO ba
 <p><a href="https://realm.io/docs/java/latest/#parceler">Realm</a></p>
 </li>
 <li>
-<p><a href="https://bitbucket.org/qbusict/cupboard">Cupboard</a></p>
+<p><a href="https://bitbucket.org/littlerobots/cupboard">Cupboard</a></p>
 </li>
 <li>
 <p><a href="http://simple.sourceforge.net/">Simple XML</a></p>
@@ -490,6 +490,24 @@ For instance, one could include the <code>@ParcelClass</code> along with the And
 <div class="paragraph">
 <p>Multiple <code>@ParcelClass</code> annotations may be declared using the <code>@ParcelClasses</code> annotation.</p>
 </div>
+<div class="paragraph">
+<p>In addition, classes referenced by <code>@ParcelClass</code> may be configured using the <code>@Parcel</code> annotation.
+This allows the seralization configuration through any parameter available on the <code>@Parcel</code> annotation including the seralization technique or classes to analyze.</p>
+</div>
+<div class="paragraph">
+<p>One useful technique is the ability to define global custom converters for a type:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@ParcelClass</span>(
+    value = LibraryParcel.class,
+    annotation = <span class="annotation">@Parcel</span>(converter = LibraryParcelConverter.class))
+<span class="type">class</span> <span class="class">SomeClass</span>{}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This allows for fine grained control over a class that isn&#8217;t available for direct modification.</p>
+</div>
 </div>
 <div class="sect2">
 <h3 id="advanced_configuration">Advanced configuration</h3>
@@ -617,7 +635,7 @@ apt <span class="string"><span class="delimiter">&quot;</span><span class="conte
 <table>
 <tr>
 <td class="icon">
-<img src="./images/icons/note.png" alt="Note">
+<i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
 For details on using the apt scope see the <a href="https://bitbucket.org/hvisser/android-apt">android-apt project</a>.
