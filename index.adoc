@@ -230,6 +230,7 @@ This allows `@Parcel` annotated classes to be used with other POJO based librari
  * https://realm.io/docs/java/latest/#parceler[Realm]
  * https://bitbucket.org/littlerobots/cupboard[Cupboard]
  * http://simple.sourceforge.net/[Simple XML]
+ * https://github.com/Raizlabs/DBFlow[DBFlow]
 
 ==== Static Factory support
 As an alternative to using a constructor directly, Parceler supports using an annotated Static Factory to build an instance of the given class.
