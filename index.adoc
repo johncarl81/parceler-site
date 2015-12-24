@@ -228,7 +228,7 @@ This allows `@Parcel` annotated classes to be used with other POJO based librari
 
  * https://code.google.com/p/google-gson/[GSON]
  * https://realm.io/docs/java/latest/#parceler[Realm]
- * https://bitbucket.org/qbusict/cupboard[Cupboard]
+ * https://bitbucket.org/littlerobots/cupboard[Cupboard]
  * http://simple.sourceforge.net/[Simple XML]
 
 ==== Static Factory support
