@@ -85,8 +85,6 @@ In addition, Parceler is supported by the following libraries:
  * https://github.com/sockeqwe/fragmentargs#argsbundler[FragmentArgs] - Uses the `ParcelerArgsBundler` adapter to wrap and unwrap `@Parcel` annotated beans with fragment parameters.
  * https://github.com/f2prateek/dart[Dart] - Autodetects `@Parcel` annotated beans and automatically unwraps them when using `@InjectExtra`.
  * http://androidannotations.org/[AndroidAnnotations] - Autodetects `@Parcel` annotated beans and https://github.com/excilys/androidannotations/wiki/ParcelerIntegration[automatically wraps/unwraps] them when using `@Extra`, `@FragmentArg`, `@InstanceState` and other `Bundle` related annotations.
- 
- AndroidAnnotations - .
 
 === Parcel attribute types
 Only a select number of types may be used as attributes of a `@Parcel` class.
@@ -345,13 +343,13 @@ public class AndroidApplication extends Application{
 Multiple `@ParcelClass` annotations may be declared using the `@ParcelClasses` annotation.
 
 In addition, classes referenced by `@ParcelClass` may be configured using the `@Parcel` annotation.
-Any parameter available on the `@Parcel` annotation may be used to configure the referenced class, including the seralization technique or classes to analyze.
+This allows the serialization configuration through any parameter available on the `@Parcel` annotation including the serialization technique or classes to analyze.
 
 One useful technique is the ability to define global custom converters for a type:
 [source,java]
 ----
 @ParcelClass(
-    value = LibraryParcel.class, 
+    value = LibraryParcel.class,
     annotation = @Parcel(converter = LibraryParcelConverter.class))
 class SomeClass{}
 ----
@@ -456,8 +454,8 @@ You may download Parceler as a Maven dependency:
 or Gradle:
 [source,groovy]
 ----
-compile "org.parceler:parceler-api:{{site.currentVersion}}"
-apt "org.parceler:parceler:{{site.currentVersion}}"
+compile 'org.parceler:parceler-api:{{site.currentVersion}}'
+apt 'org.parceler:parceler:{{site.currentVersion}}'
 ----
 NOTE: For details on using the apt scope see the https://bitbucket.org/hvisser/android-apt[android-apt project].
 
