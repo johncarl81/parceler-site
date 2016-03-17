@@ -142,11 +142,6 @@ In addition, Parceler is supported by the following libraries:</p>
 </li>
 <li>
 <p><a href="http://androidannotations.org/">AndroidAnnotations</a> - Autodetects <code>@Parcel</code> annotated beans and <a href="https://github.com/excilys/androidannotations/wiki/ParcelerIntegration">automatically wraps/unwraps</a> them when using <code>@Extra</code>, <code>@FragmentArg</code>, <code>@InstanceState</code> and other <code>Bundle</code> related annotations.</p>
-<div class="literalblock">
-<div class="content">
-<pre>AndroidAnnotations - .</pre>
-</div>
-</div>
 </li>
 </ul>
 </div>
@@ -500,7 +495,7 @@ For instance, one could include the <code>@ParcelClass</code> along with the And
 </div>
 <div class="paragraph">
 <p>In addition, classes referenced by <code>@ParcelClass</code> may be configured using the <code>@Parcel</code> annotation.
-This allows the seralization configuration through any parameter available on the <code>@Parcel</code> annotation including the seralization technique or classes to analyze.</p>
+This allows the serialization configuration through any parameter available on the <code>@Parcel</code> annotation including the serialization technique or classes to analyze.</p>
 </div>
 <div class="paragraph">
 <p>One useful technique is the ability to define global custom converters for a type:</p>
@@ -635,8 +630,8 @@ Parceler will not write a <code>Parceler$$Parcels</code> mapping class if no ind
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="groovy">compile <span class="string"><span class="delimiter">&quot;</span><span class="content">org.parceler:parceler-api:1.0.4</span><span class="delimiter">&quot;</span></span>
-apt <span class="string"><span class="delimiter">&quot;</span><span class="content">org.parceler:parceler:1.0.4</span><span class="delimiter">&quot;</span></span></code></pre>
+<pre class="CodeRay highlight"><code data-lang="groovy">compile <span class="string"><span class="delimiter">'</span><span class="content">org.parceler:parceler-api:1.0.4</span><span class="delimiter">'</span></span>
+apt <span class="string"><span class="delimiter">'</span><span class="content">org.parceler:parceler:1.0.4</span><span class="delimiter">'</span></span></code></pre>
 </div>
 </div>
 <div class="admonitionblock note">
