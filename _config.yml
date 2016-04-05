@@ -2,7 +2,7 @@
 
 title: "Jekyll-asciidoc-quickstart"
 
-currentVersion: "1.0.4"
+currentVersion: "1.1.0"
 
 asciidoctor:
   attributes:
