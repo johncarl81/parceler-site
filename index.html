@@ -237,7 +237,7 @@ This is because Parceler opts for performance rather than checking <code>.getCla
 <pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@Parcel</span>
 <span class="directive">public</span> <span class="type">class</span> <span class="class">Example</span> {
     <span class="directive">public</span> Parent p;
-    Example(Parent p) { <span class="local-variable">this</span>.p = p; }
+    <span class="annotation">@ParcelConstructor</span> Example(Parent p) { <span class="local-variable">this</span>.p = p; }
 }
 
 <span class="annotation">@Parcel</span> <span class="directive">public</span> <span class="type">class</span> <span class="class">Parent</span> {}
