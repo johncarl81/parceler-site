@@ -568,11 +568,7 @@ Parcels.wrap(Example.class, proxy);</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre># Parcel library
--keep class * implements android.os.Parcelable {
-  public static final android.os.Parcelable$Creator *;
-}
-
--keep class org.parceler.Parceler$$Parcels</pre>
+-keep class **$$Parcelable { *; }</pre>
 </div>
 </div>
 </div>
