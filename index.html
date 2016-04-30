@@ -561,33 +561,6 @@ Parcels.wrap(Example.class, proxy);</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="avoiding_parcels_indexing">Avoiding Parcels indexing</h4>
-<div class="paragraph">
-<p>Using Parceler in libraries can be challenging because Parceler writes a single mapping class <code>Parceler$$Parcels</code> to associate a given type with a <code>Parcelable</code>.
-This mapping class can collide giving the following error during compilation:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">Error Code:
-    2
-Output:
-    UNEXPECTED TOP-LEVEL EXCEPTION:
-    com.android.dex.DexException: Multiple dex files define Lorg/parceler/Parceler$$Parcels$1;
-        at com.android.dx.merge.DexMerger.readSortableTypes(DexMerger.java:594)
-        at com.android.dx.merge.DexMerger.getSortedTypes(DexMerger.java:552)
-        at com.android.dx.merge.DexMerger.mergeClassDefs(DexMerger.java:533)
-        ....</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>To avoid writing this common mapping class, set <code>parcelsIndex = false</code> to each of the library classes.
-Parceler will not write a <code>Parceler$$Parcels</code> mapping class if no indexable classes exist and the Parcels utiltiy class will fallback to looking up the generated class by name.</p>
-</div>
-<div class="paragraph">
-<p>Alternatively, using <code>@ParcelClass</code> in the root project, instead of annotating classes directly in the library can avoid this issue.</p>
-</div>
-</div>
-<div class="sect3">
 <h4 id="configuring_proguard">Configuring Proguard</h4>
 <div class="paragraph">
 <p>To configure Proguard, add the following lines to your proguard configuration file.  These will keep files related to the <code>Parcels</code> utilty class and the <code>Parcelable</code> <code>CREATOR</code> instance:</p>
