@@ -9,6 +9,8 @@ Have a question?  http://stackoverflow.com/questions/ask?tags=parceler[Ask it on
 
 Found an issue?  https://github.com/johncarl81/parceler/issues/new[Please report it.]
 
+image:https://badges.gitter.im/johncarl81/parceler.svg[link="https://gitter.im/johncarl81/parceler?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge"]
+
 === Introduction
 
 In Android, http://developer.android.com/reference/android/os/Parcelable.html[Parcelables] are a great way to serialize Java Objects between Contexts.
