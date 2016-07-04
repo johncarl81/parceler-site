@@ -571,6 +571,8 @@ Parcels.wrap(Example.class, proxy);</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre># Parcel library
+-keep interface org.parceler.Parcel
+-keep @org.parceler.Parcel class * { *; }
 -keep class **$$Parcelable { *; }</pre>
 </div>
 </div>
