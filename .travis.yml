@@ -5,4 +5,4 @@ sudo: false
 script: bundle exec rake deploy
 env:
   global:
-    secure: DkTtoX7ZICxbEp8t6mGW9r5Q3J0f4vWlFroZvYHFdeEZUr7deHwi2/YtWxGS2pynpPbJHkSad1G2bg9B6MS71sK2UJnyeF93kEV6RUh/PTlDDNy9iSEnoMafLX4SEOBmdLP01+m2HZ9gMfwrOvQF69TD2G7nyYoeVhS7SAsTccA=
+    secure: Z7z66NZNoQ8sonYtenb2HMPQJtYw8sp91bQaTxvsS+om1F7Uhy7M7mfYbnFvinioBhi5giV9FBw9d9iSxR8qchV/vJR9Nuekd18azhJwZkUiwQ3U/xQg157EcykNjx9arp+hZPi5yD+J8dkUgBPeZkzQA6vrv8kkUF3p7LJNSho=
