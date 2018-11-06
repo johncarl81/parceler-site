@@ -433,7 +433,7 @@ You may download Parceler as a Maven dependency:
 or Gradle:
 [source,groovy]
 ----
-compile 'org.parceler:parceler-api:{{site.currentVersion}}'
+implementation 'org.parceler:parceler-api:{{site.currentVersion}}'
 annotationProcessor 'org.parceler:parceler:{{site.currentVersion}}'
 ----
 
